@@ -1,0 +1,4 @@
+﻿  main.c
+C:\Users\gloly\Documents\GitHub\AtentsCpp\AtentsCpp\AtentsDS01\main.c(141,6): warning C4101: 'a' :참조되지 않은 지역 변수입니다.
+C:\Users\gloly\Documents\GitHub\AtentsCpp\AtentsCpp\AtentsDS01\main.c(142,8): warning C4101: 'b' :참조되지 않은 지역 변수입니다.
+  AtentsDS01.vcxproj -> C:\Users\gloly\Documents\GitHub\AtentsCpp\AtentsCpp\Debug\AtentsDS01.exe
