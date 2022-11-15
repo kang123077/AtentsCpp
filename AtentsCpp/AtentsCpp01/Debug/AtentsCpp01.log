@@ -1,6 +1,6 @@
 ﻿  main.cpp
-C:\Users\gloly\Documents\GitHub\AtentsCpp\AtentsCpp\AtentsCpp01\main.cpp(90,20): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\gloly\Documents\GitHub\AtentsCpp\AtentsCpp\AtentsCpp01\main.cpp(91,20): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\gloly\Documents\GitHub\AtentsCpp\AtentsCpp\AtentsCpp01\main.cpp(92,19): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\gloly\Documents\GitHub\AtentsCpp\AtentsCpp\AtentsCpp01\main.cpp(93,19): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\gloly\Documents\GitHub\AtentsCpp\AtentsCpp\AtentsCpp01\main.cpp(97,20): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\gloly\Documents\GitHub\AtentsCpp\AtentsCpp\AtentsCpp01\main.cpp(98,20): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\gloly\Documents\GitHub\AtentsCpp\AtentsCpp\AtentsCpp01\main.cpp(99,19): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\gloly\Documents\GitHub\AtentsCpp\AtentsCpp\AtentsCpp01\main.cpp(100,19): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
   AtentsCpp01.vcxproj -> C:\Users\gloly\Documents\GitHub\AtentsCpp\AtentsCpp\Debug\AtentsCpp01.exe
