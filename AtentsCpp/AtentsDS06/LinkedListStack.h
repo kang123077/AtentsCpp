@@ -10,10 +10,13 @@ typedef struct tagNode
 {
 	char* Data;
 	struct tagNode* NextNode;
+	// 더블 링크 추가
+	struct tagNode* PrevNode;
 } Node;
 
 typedef struct tagLinkedListStack
 {
+	int Count;
 	Node* List;
 	Node* Top;
 } LinkedListStack;

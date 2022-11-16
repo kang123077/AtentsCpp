@@ -20,6 +20,7 @@ int main(void)
 
 	for (i = 0; i < Count; i++)
 	{
+		printf("Count : %d\n", LLS_GetSize(Stack));
 		if (LLS_IsEmpty(Stack))
 			break;
 
@@ -38,6 +39,7 @@ int main(void)
 			printf("Stack Is Empty.\n");
 		}
 	}
+	printf("Count : %d\n", LLS_GetSize(Stack));
 	LLS_DestroyStack(Stack);
 
 	return 0;

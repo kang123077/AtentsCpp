@@ -7,6 +7,7 @@ void	LLS_CreateStack(LinkedListStack** Stack)
 	(*Stack) = (LinkedListStack*)malloc(sizeof(LinkedListStack));
 	(*Stack)->List = NULL;
 	(*Stack)->Top = NULL;
+	(*Stack)->Count = 0;
 }
 
 void	LLS_DestroyStack(LinkedListStack* Stack)
@@ -30,6 +31,8 @@ Node* LLS_CreateNode(char* NewData)
 	strcpy(NewNode->Data, NewData);
 
 	NewNode->NextNode = NULL;
+	// 더블 링크 추가
+	NewNode->PrevNode = NULL;
 
 	// 노드 주소를 반환한다
 	return NewNode;
@@ -50,16 +53,20 @@ void	LLS_Push(LinkedListStack* Stack, Node* NewNode)
 	else
 	{
 		// 최상의 노드를 찾아 NewNode를 연결한다(쌓는다)
-		Node* OldTop = Stack->List;
-		while (OldTop->NextNode != NULL)
-		{
-			OldTop = OldTop->NextNode;
-		}
-		OldTop->NextNode = NewNode;
+		//Node* OldTop = Stack->List;
+		//while (OldTop->NextNode != NULL)
+		//{
+		//	OldTop = OldTop->NextNode;
+		//}
+		//OldTop->NextNode = NewNode;
+		// 더블 링크드 리스트로 개선
+		Stack->Top->NextNode = NewNode;
+		NewNode->PrevNode = Stack->Top;
 	}
 
 	// 스택의 Top 필드에 새 노드의 주소를 등록한다
 	Stack->Top = NewNode;
+	Stack->Count++;
 }
 
 // Top 노드를 Pop해야해서 Top노드의 이전 노드 찾는 로직이 비효율적임
@@ -77,15 +84,20 @@ Node* LLS_Pop(LinkedListStack* Stack)
 	else
 	{
 		// 새로운 최상위 노드를 스택의 Top 필드에 등록한다
-		Node* CurrentTop = Stack->List;
-		while (CurrentTop != NULL && CurrentTop->NextNode != Stack->Top)
-		{
-			CurrentTop = CurrentTop->NextNode;
-		}
+		//Node* CurrentTop = Stack->List;
+		//while (CurrentTop != NULL && CurrentTop->NextNode != Stack->Top)
+		//{
+		//	CurrentTop = CurrentTop->NextNode;
+		//}
 
-		Stack->Top = CurrentTop;
-		CurrentTop->NextNode = NULL;
+		//Stack->Top = CurrentTop;
+		//CurrentTop->NextNode = NULL;
+
+		Stack->Top = Stack->Top->PrevNode;
+		Stack->Top->NextNode = NULL;
+		TopNode->PrevNode = NULL;
 	}
+	Stack->Count--;
 
 	return TopNode;
 }
@@ -98,16 +110,16 @@ Node* LLS_Top(LinkedListStack* Stack)
 // GetSIze함수 노드 갯수가 많으면 갯수를 세는 방식이 비효율적
 int	LLS_GetSize(LinkedListStack* Stack)
 {
-	int Count = 0;
-	Node* Current = Stack->List;
+	//int Count = 0;
+	//Node* Current = Stack->List;
 
-	while (Current != NULL)
-	{
-		Current = Current->NextNode;
-		Count++;
-	}
+	//while (Current != NULL)
+	//{
+	//	Current = Current->NextNode;
+	//	Count++;
+	//}
 
-	return Count;
+	return Stack->Count;
 }
 
 int LLS_IsEmpty(LinkedListStack* Stack)
