@@ -14,7 +14,7 @@ typedef enum tagAnimalType {
 
 class Animal {
 private:
-	AnimalType _type; // 0: µÅÁö, 1: ¼Ò, 2: ´ß
+	AnimalType _type; // 0: µÅÁö, 1: ¼Ò, 2: ´ß, 3: µ¹°í·¡
 	string _name;
 	float _weight;
 	float _height;
