@@ -9,12 +9,13 @@ typedef Score ElementType;
 
 typedef struct tagNode
 {
+	int Frequency; // 빈도수
 	ElementType Data;	// 데이타 
     struct tagNode* NextNode;	// 다음 노드의 주소값을 저장
 } Node;
 
 /* 함수 원형 선언 */
-Node* SLL_CreateNode(ElementType NewData);
+Node* SLL_CreateNode(ElementType NewData, int Frequency);
 void  SLL_DestroyNode(Node* Node);
 void  SLL_AppendNode(Node** Head, Node* NewNode);
 void  SLL_InsertAfter(Node* Current, Node* NewNode);

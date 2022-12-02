@@ -30024,20 +30024,165 @@ Node* SequentialSearch(Node* Head, double Target) {
 
 // 전진이동법
 Node* MoveToFront(Node** Head, double Target) {
-	Node* Current = Head;
-	Node* PrevNode = NULL;
-	Node* TempNode = NULL;
+	Node* Current = *Head;
+	Node* Prev = NULL;
 
-	if (Current->Data.score == Target)
-		return NULL;
+	while (Current != NULL)
+	{
+		if (Current->Data.score == Target)
+		{
+			// if (Prev == NULL)
+			if (Current == *Head) // 헤드노드인경우
+			{
+				break;
+			}
+			else if (Current->NextNode == NULL)
+			{
+				// 노드를 링크에서 제거
+				Prev->NextNode = NULL;
+				// 헤드노드로 변경
+				Current->NextNode = *Head;
+				*Head = Current;
 
+				break;
+			}
+			else
+			{
+				// 노드를 링크에서 제외
+				Prev->NextNode = Current->NextNode;
+				// 헤드노드로 변경
+				Current->NextNode = *Head;
+				*Head = Current;
+
+				break;
+			}
+		}
+		Prev = Current;
+		Current = Current->NextNode;
+	}
 
 	return NULL;
 }
 
 // 전위법
 Node* Transpos(Node** Head, double Target) {
-	return NULL;
+	Node* Current = *Head;
+	Node* Prev = NULL;
+	Node* PrevPrev = NULL;
+
+	while (Current != NULL)
+	{
+		if (Current->Data.score == Target)
+		{
+			if (Prev == NULL)
+			{
+				break;
+			}
+			else if (PrevPrev == NULL)
+			{
+				Prev->NextNode = Current->NextNode;
+				Current->NextNode = *Head;
+				*Head = Current;
+				break;
+			}
+			else
+			{
+				Prev->NextNode = Current->NextNode;
+				PrevPrev->NextNode = Current;
+				Current->NextNode = Prev;
+				break;
+			}
+		}
+		PrevPrev = Prev;
+		Prev = Current;
+		Current = Current->NextNode;
+	}
+
+	return Current;
+}
+
+// 전위법
+Node* Transpos2(Node** Head, double Target) {
+	Node* Current = *Head;
+	Node* Prev = NULL;
+	Node* PPrev = NULL;
+
+	while (Current != NULL) {
+
+		// 찾는 값을 가진 노드를 찾는다.
+		if (Current->Data.score == Target) {
+			if (Current == (*Head)) {   // 찾는 값을 가진 노드가 헤드인 경우
+				break;
+			}
+			else if ((*Head)->NextNode == Current) {   // 찾는 값을 가진 노드가 헤드노드 다음인경우
+			   // current를 링크에서 제거
+				(*Head)->NextNode = Current->NextNode;
+				// Current를 헤드노드로 변경
+				Current->NextNode = (*Head);
+				(*Head) = Current;   // (*Head) <= 메인함수의 List변수
+
+				break;
+			}
+			/*
+			else if (Current->NextNode == NULL) {   // Current가 꼬리노드인 경우
+			   // Current를 링크에서 제거
+			   Prev->NextNode = Current->NextNode;   // Current가 꼬리노드이기 때문에 NextNode가 NULL
+
+			   // Current를 PPrev(current의 이전노드의 이전노드)와 Prev(current의 이전노드)의 사이에 삽입
+			   PPrev->NextNode = Current;
+			   Current->NextNode = Prev;
+
+			   break;
+			}
+			*/
+			else {
+				// Current를 링크에서 제거
+				Prev->NextNode = Current->NextNode;
+				// Current를 PPrev와 Prev의 사이에 삽입
+				PPrev->NextNode = Current;   // Current의 이전이전노드의 NextNode에 Current의 주소값을 저장
+				Current->NextNode = Prev;   // Current의 NextNode에 이전노드의 주소값을 저장
+				break;
+			}
+		}
+		PPrev = Prev;
+		Prev = Current;
+		Current = Current->NextNode;
+	}
+	return Current;
+}
+
+Node* FrequencyMethod(Node** Head, double Target) {
+	Node* Current = *Head;
+	Node* Position = *Head; // 바꿀 위치의 PrevNode가 됨
+	Node* Prev = NULL;
+
+	while (Current != NULL)
+	{
+		if (Current->Data.score == Target)
+		{
+			Current->Frequency++;
+
+			while (Position->NextNode->Frequency <= Current->Frequency)
+				Position = Position->NextNode;
+			
+			if (Prev->Frequency > Current->Frequency)
+			{
+				break;
+			}
+			else if ((*Head)->Frequency == Current->Frequency)
+			{
+				Prev->NextNode = Current->NextNode;
+				Current->NextNode = *Head;
+				*Head = Current;
+			}
+
+		}
+
+		Prev = Current;
+		Current = Current->NextNode;
+	}
+
+	return Current;
 }
 
 int main(void)
@@ -30056,7 +30201,7 @@ int main(void)
 	/*  노드 30000개 추가 */
 	for (i = 0; i < Length; i++)
 	{
-		NewNode = SLL_CreateNode(DataSet[i]);
+		NewNode = SLL_CreateNode(DataSet[i], 0);
 		SLL_AppendNode(&List, NewNode);
 	}
 
@@ -30066,11 +30211,13 @@ int main(void)
 
 		if (InputValue <= 0.0) break;
 
-		Node* TargetNode = SequentialSearch(List, InputValue);
+		// Node* TargetNode = SequentialSearch(List, InputValue);
+		Node* TargetNode = FrequencyMethod(&List, InputValue);
 
 		if (TargetNode != NULL) {
-			printf("SearchValue number: %d, score: %lf\n", TargetNode->Data.number, TargetNode->Data.score);
-			MoveToFront(List, InputValue);
+			printf("SearchValue number: %d, score: %lf, Frequency : %d\n", TargetNode->Data.number, TargetNode->Data.score, TargetNode->Frequency);
+			// MoveToFront(&List, InputValue);
+			// Transpos(&List, InputValue);
 		}
 		else {
 			printf("찾는 값이 없습니다\n");
@@ -30079,13 +30226,13 @@ int main(void)
 		// 3만개의 노드중에 앞에 10개 출력
 		for (int i = 0; i < 10; i++) {
 			Current = SLL_GetNodeAt(List, i);
-			printf("DataSet[%d] number: %d, score: %.4lf\n", i, Current->Data.number, Current->Data.score);
+			printf("List[%d] : number: %d, score : %4lf, Frequency : %d\n", i, Current->Data.number, Current->Data.score, Current->Frequency);
 		}
 
 		// 3만개의 노드중에 뒤에 10개 출력
 		for (int i = 29990; i < Length; i++) {
 			Current = SLL_GetNodeAt(List, i);
-			printf("DataSet[%d] number: %d, score: %.4lf\n", i, Current->Data.number, Current->Data.score);
+			printf("List[%d] : number: %d, score : %4lf, Frequency : %d\n", i, Current->Data.number, Current->Data.score, Current->Frequency);
 		}
 	}
 
@@ -30095,7 +30242,7 @@ int main(void)
 	for (i = 0; i < Count; i++)
 	{
 		Current = SLL_GetNodeAt(List, i);
-		printf("List[%d] : number: %d, score: %lf\n", i, Current->Data.number, Current->Data.score);
+		printf("List[%d] : number: %d, score : %4lf, Frequency : %d\n", i, Current->Data.number, Current->Data.score, Current->Frequency);
 	}
 
 
