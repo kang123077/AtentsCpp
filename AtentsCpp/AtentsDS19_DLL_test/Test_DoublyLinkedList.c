@@ -30019,7 +30019,63 @@ Node* DoubleMoveToFront(Node** Head, double Target) {
 
 // 전위법
 Node* DoubleTranspose(Node** Head, double Target) {
+	Node* Current = (*Head);   // 헤드노드의 주소값을 Current에 저장
 
+	while (Current != NULL) {   // 꼬리노드 다음에 아닐때 까지
+		if (Current->Data.score == Target) {   // 찾는 값을 가진 노드를 찾는다.
+			if (Current == (*Head)) {   // 헤드인 경우
+				break;
+			}
+			else if ((*Head)->NextNode == Current) {   // 헤드 다음인 경우
+			   // 링크에서 제거
+				Current->PrevNode->NextNode = Current->NextNode;
+				Current->NextNode->PrevNode = Current->PrevNode;
+
+				// Current를 헤드 노드로 만든다.
+				Current->NextNode = Current->PrevNode;
+				// Current->NextNode = (*Head);
+				Current->PrevNode->PrevNode = Current;
+				// (*Head)->PrevNode = Current;
+				Current->PrevNode = NULL;
+
+				(*Head) = Current;   // 메인 List변수에 Current주소값을 저장(헤드노드가 변경)
+
+				break;
+			}
+			else if (Current->NextNode == NULL) { // 꼬리인 경우
+			   // 링크에서 제거
+				Current->PrevNode->NextNode = NULL;
+
+				// Current를 앞노드와 앞앞노드사이에 삽입한다.
+				Current->PrevNode->PrevNode->NextNode = Current;
+				Current->NextNode = Current->PrevNode;
+
+				Current->PrevNode = Current->PrevNode->PrevNode;
+				Current->NextNode->PrevNode = Current;
+			}
+			else {
+				// 링크에서 제거
+				Current->PrevNode->NextNode = Current->NextNode;
+				Current->NextNode->PrevNode = Current->PrevNode;
+
+				// Current를 앞노드와 앞앞노드사이에 삽입한다.
+				Current->NextNode = Current->PrevNode;
+				Current->PrevNode = Current->PrevNode->PrevNode;
+
+				Current->PrevNode->NextNode = Current;
+				Current->NextNode->PrevNode = Current;
+
+				break;
+
+			}
+
+		}
+
+
+		Current = Current->NextNode;   // Current에 다음 노드의 주소값을 저장
+	}
+
+	return Current;
 }
 
 int main( void )
@@ -30050,7 +30106,7 @@ int main( void )
 			break;
 		}
 
-		Node* MatchNode = DoubleSearch(List, InputValue);
+		Node* MatchNode = DoubleTranspose(&List, InputValue);
 
 
 		if (MatchNode != NULL) {

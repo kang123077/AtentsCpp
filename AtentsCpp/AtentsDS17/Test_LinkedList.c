@@ -30154,7 +30154,7 @@ Node* Transpos2(Node** Head, double Target) {
 Node* FrequencyMethod(Node** Head, double Target) {
 	Node* Current = *Head;
 	Node* Position = *Head; // 바꿀 위치의 PrevNode가 됨
-	Node* Prev = NULL;
+	Node* Prev = NULL; // Current의 이전 노드
 
 	while (Current != NULL)
 	{
@@ -30162,20 +30162,40 @@ Node* FrequencyMethod(Node** Head, double Target) {
 		{
 			Current->Frequency++;
 
-			while (Position->NextNode->Frequency <= Current->Frequency)
-				Position = Position->NextNode;
-			
-			if (Prev->Frequency > Current->Frequency)
+			// Current가 헤드노드이거나 Prev의 Frequency가 Current의 것보다 크면
+			// Frequency가 같은 경우 최근에 탐색 된 것이 앞으로 가도록
+			if (Prev == NULL || Prev->Frequency > Current->Frequency)
 			{
 				break;
 			}
-			else if ((*Head)->Frequency == Current->Frequency)
+			// 헤드노드의 Frequency가 Current보다 낮거나 같으면 (Current가 헤드가 되어야 함)
+			else if ((*Head)->Frequency <= Current->Frequency)
 			{
+				// Current를 링크에서 제거
 				Prev->NextNode = Current->NextNode;
+
+				// Current를 헤드노드로
 				Current->NextNode = *Head;
 				*Head = Current;
-			}
 
+				break;
+			}
+			else
+			{
+				// Current의 바꿀 위치를 탐색
+				// Current가 Position의 NextNode가 될 예정
+				while (!(Position->NextNode->Frequency <= Current->Frequency))
+					Position = Position->NextNode;
+
+				// Current를 링크에서 제거
+				Prev->NextNode = Current->NextNode;
+
+				// Current를 Position의 NextNode로 삽입
+				Current->NextNode = Position->NextNode;
+				Position->NextNode = Current;
+
+				break;
+			}
 		}
 
 		Prev = Current;
